@@ -81,7 +81,8 @@ sum(is.na(full_data))
 ```
 
 ### 2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need  
-to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc. Create a new dataset that is equal to the original dataset but with the missing data filled in.
+to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.  
+Create a new dataset that is equal to the original dataset but with the missing data filled in.
 ```{r}
 missing_dates <- unique(filter(full_data, is.na(steps))$date)
 filled_data <- full_data
@@ -91,8 +92,9 @@ sum(is.na(filled_data$steps))
 ```
 
 ### 3. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median  
-total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
-```{r}
+total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment?  
+What is the impact of imputing missing data on the estimates of the total daily number of steps?
+```{
 new_daily_steps <- filled_data %>%
     group_by(date) %>%
     summarise(total_steps = sum(steps, na.rm = TRUE))
