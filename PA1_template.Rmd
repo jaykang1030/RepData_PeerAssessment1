@@ -7,9 +7,17 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-It is now possible to collect a large amount of data about personal movement using activity monitoring devices such as a __Fitbit__, __Nike__, __Fuelband__, or __Jawbone Up__. These type of devices are part of the “quantified self” movement – a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. But these data remain under-utilized both because the raw data are hard to obtain and there is a lack of statistical methods and software for processing and interpreting the data.
+It is now possible to collect a large amount of data about personal movement using activity monitoring devices  
+such as a __Fitbit__, __Nike__, __Fuelband__, or __Jawbone Up__. These type of devices are part of  
+the “quantified self” movement – a group of enthusiasts who take measurements about themselves regularly to  
+improve their health, to find patterns in their behavior, or because they are tech geeks. But these data remain  
+under-utilized both because the raw data are hard to obtain and there is a lack of statistical methods and software  
+for processing and interpreting the data.
 
-This assignment makes use of data from a personal activity monitoring device. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.
+This assignment makes use of data from a personal activity monitoring device.  
+This device collects data at 5 minute intervals through out the day.  
+The data consists of two months of data from an anonymous individual collected during the months of  
+October and November, 2012 and include the number of steps taken in 5 minute intervals each day.
 
 The variables included in this dataset are:
 
@@ -49,7 +57,8 @@ median(daily_steps$total_steps)
 ```
 
 ## What is the average daily activity pattern?
-### 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
+### 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken,  
+averaged across all days (y-axis)
 ```{r}
 interval_steps <- full_data %>%
     filter(!is.na(steps)) %>%
@@ -71,7 +80,8 @@ filter(interval_steps, average_steps == max(average_steps))
 sum(is.na(full_data))
 ```
 
-### 2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc. Create a new dataset that is equal to the original dataset but with the missing data filled in.
+### 2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need  
+to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc. Create a new dataset that is equal to the original dataset but with the missing data filled in.
 ```{r}
 missing_dates <- unique(filter(full_data, is.na(steps))$date)
 filled_data <- full_data
@@ -80,7 +90,8 @@ filled_data[is.na(full_data$steps),]$steps <- coalesce(as.double(full_data[is.na
 sum(is.na(filled_data$steps))
 ```
 
-### 3. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
+### 3. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median  
+total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 ```{r}
 new_daily_steps <- filled_data %>%
     group_by(date) %>%
@@ -94,14 +105,17 @@ median(new_daily_steps$total_steps)
 ```
 
 ## Are there differences in activity patterns between weekdays and weekends?
-### 1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
+### 1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend”  
+indicating whether a given date is a weekday or weekend day.
 ```{r}
 full_data$week <- weekdays(full_data$date)
 weekday <- (unique(full_data$week))[1:5]
 full_data$week <- ifelse(full_data$week %in% weekday, "weekday", "weekend")
 table(full_data$week)
 ```
-### 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was created using simulated data:
+### 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis)  
+and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).  
+The plot should look something like the following, which was created using simulated data:
 ```{r}
 interval_steps_week <- full_data %>%
     filter(!is.na(steps)) %>%
